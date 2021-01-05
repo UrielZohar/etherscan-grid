@@ -11,16 +11,18 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 
 
-import { ProgressBarCell } from '../../../theme-sources/material-ui/components/progress-bar-cell';
-import { HighlightedCell } from '../../../theme-sources/material-ui/components/highlighted-cell';
-import { CurrencyTypeProvider } from '../../../theme-sources/material-ui/components/currency-type-provider';
-import { PercentTypeProvider } from '../../../theme-sources/material-ui/components/percent-type-provider';
-import { BooleanTypeProvider } from '../../../theme-sources/material-ui/components/boolean-type-provider';
+import { ProgressBarCell } from './theme-sources/material-ui/components/progress-bar-cell';
+import { HighlightedCell } from './theme-sources/material-ui/components/highlighted-cell';
+import { CurrencyTypeProvider } from './theme-sources/material-ui/components/currency-type-provider';
+import { PercentTypeProvider } from './theme-sources/material-ui/components/percent-type-provider';
+import { BooleanTypeProvider } from './theme-sources/material-ui/components/boolean-type-provider';
 
 import {
   generateRows,
   globalSalesValues,
-} from '../../../demo-data/generator';
+} from './demo-data/generator'; 
+
+import { Spinner } from './spinner/Spinner'
 
 const Cell = (props) => {
   const { column } = props;
@@ -61,52 +63,46 @@ export default () => {
   const [booleanColumns] = useState(['shipped']);
 
   return (
-    <Paper>
-      <Grid
-        rows={rows}
-        columns={columns}
-        getRowId={getRowId}
-      >
-        <DragDropProvider />
+    <React.Fragment>
+      <Spinner />
+      <Paper>
+        <Grid
+          rows={rows}
+          columns={columns}
+          getRowId={getRowId}
+        >
+          <FilteringState
+            defaultFilters={[{ columnName: 'saleDate', value: '2016-02' }]}
+          />
+          <SearchState />
+          <SortingState
+            defaultSorting={[
+              { columnName: 'product', direction: 'asc' },
+              { columnName: 'saleDate', direction: 'asc' },
+            ]}
+          />
+          <SelectionState />
 
-        <FilteringState
-          defaultFilters={[{ columnName: 'saleDate', value: '2016-02' }]}
-        />
-        <SearchState />
-        <SortingState
-          defaultSorting={[
-            { columnName: 'product', direction: 'asc' },
-            { columnName: 'saleDate', direction: 'asc' },
-          ]}
-        />
-        <GroupingState
-          defaultGrouping={[{ columnName: 'product' }]}
-          defaultExpandedGroups={['EnviroCare Max']}
-        />
-        <SelectionState />
+          <IntegratedFiltering />
+          <IntegratedSorting />
+          <IntegratedSelection />
 
-        <IntegratedFiltering />
-        <IntegratedSorting />
-        <IntegratedGrouping />
-        <IntegratedSelection />
+          <CurrencyTypeProvider for={currencyColumns} />
+          <PercentTypeProvider for={percentColumns} />
+          <BooleanTypeProvider for={booleanColumns} />
 
-        <CurrencyTypeProvider for={currencyColumns} />
-        <PercentTypeProvider for={percentColumns} />
-        <BooleanTypeProvider for={booleanColumns} />
-
-        <VirtualTable
-          columnExtensions={tableColumnExtensions}
-          cellComponent={Cell}
-        />
-        <TableHeaderRow showSortingControls />
-        <TableColumnReordering defaultOrder={columns.map(column => column.name)} />
-        <TableFilterRow showFilterSelector />
-        <TableSelection showSelectAll />
-        <TableGroupRow />
-        <Toolbar />
-        <SearchPanel />
-        <GroupingPanel showSortingControls />
-      </Grid>
-    </Paper>
+          <VirtualTable
+            columnExtensions={tableColumnExtensions}
+            cellComponent={Cell}
+          />
+          <TableHeaderRow showSortingControls />
+          <TableColumnReordering defaultOrder={columns.map(column => column.name)} />
+          <TableFilterRow showFilterSelector />
+          <TableSelection showSelectAll />
+          <Toolbar />
+          <SearchPanel />
+        </Grid>
+      </Paper>
+    </React.Fragment>
   );
 };
