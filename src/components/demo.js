@@ -40,22 +40,32 @@ const Cell = (props) => {
 const getRowId = row => row.id;
 
 export default () => {
+  /*
+  - timestamp: timeStamp
+	- from address: from
+	- to address: to
+	- value: value
+	- confirmations: confirmations
+  - hash: hash
+  */
+  console.log("Called");
   const [columns] = useState([
-    { name: 'product', title: 'Product' },
-    { name: 'region', title: 'Region' },
-    { name: 'sector', title: 'Sector' },
-    { name: 'channel', title: 'Channel' },
-    { name: 'amount', title: 'Sale Amount' },
-    { name: 'discount', title: 'Discount' },
-    { name: 'saleDate', title: 'Sale Date' },
-    { name: 'customer', title: 'Customer' },
-    { name: 'units', title: 'Units' },
-    { name: 'shipped', title: 'Shipped' },
+    { name: "hash", title: 'Hash' },
+    { name: "value", title: 'Value' },
+    { name: "from", title: 'From address' },
+    { name: "to", title: 'To address' },
+    { name: "confirmations", title: 'Confirmations' },
+    { name: "timeStamp", title: 'Timestamp' },
   ]);
-  const [rows] = useState(generateRows({
-    columnValues: { id: ({ index }) => index, ...globalSalesValues },
-    length: 200000,
-  }));
+  const [rows, setRows] = useState([{
+    "id": 0,
+    "timeStamp":"1494856341",
+    "hash":"0xcdff1c89da4627911280fce6e2693920070fb389e17c21aa5d3bb60fb1d412c9",
+    "from":"0x9af152297acfdad5ff9bdc53ef3105efc33e2070",
+    "to":"0x9f7dd5ea934d188a599567ee104e97fa46cb4496",
+    "value":"54406960000000000",
+    "confirmations":"7889487"}
+  ]);
   const [tableColumnExtensions] = useState([
     { columnName: 'amount', align: 'right' },
     { columnName: 'units', align: 'right' },
@@ -63,15 +73,11 @@ export default () => {
   const [currencyColumns] = useState(['amount']);
   const [percentColumns] = useState(['discount']);
   const [booleanColumns] = useState(['shipped']);
-  useEffect(() => {
-    console.log(APIManager.getAllTnxByAddress('0x9f7dd5ea934d188a599567ee104e97fa46cb4496'));
-    axios.get(APIManager.getAllTnxByAddress('0x9f7dd5ea934d188a599567ee104e97fa46cb4496'))
-    .then(res => console.log(res), err => console.log('fail'));
-  }, []);
+  
 
   return (
     <React.Fragment>
-      <Spinner />
+      <h1>{rows.length}</h1>
       <Paper>
         <Grid
           rows={rows}
