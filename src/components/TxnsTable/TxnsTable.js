@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { Input, Button } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import {
   SortingState, 
   FilteringState, 
@@ -19,17 +19,14 @@ import {
   TableColumnResizing
 } from '@devexpress/dx-react-grid-material-ui';
 
-import { Spinner } from './spinner/Spinner';
+import { Spinner } from '../spinner/Spinner';
 import axios from 'axios';
-import APIManager from '../utils/APIManager';
-
+import APIManager from '../../utils/APIManager';
+import './TxnsTable.css';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
   },
 }));
 
@@ -78,7 +75,9 @@ const Cell = (props) => {
 const getRowId = row => row.id;
 
 export default () => {
+  const addressInput = useRef();
   const classes = useStyles();
+  const [errInInput, setErrInInput] = useState(false);
   const [columns] = useState([
     { name: "hash", title: 'Hash' },
     { name: "value", title: 'Value' },
@@ -89,9 +88,15 @@ export default () => {
   ]);
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    setIsLoading(true);
-    axios.get(APIManager.getAllTnxByAddress('0x9f7dd5ea934d188a599567ee104e97fa46cb4496'))
+  const loadTxnsByAddress = useCallback(() => {
+    const address = addressInput.current.value;
+    if (!address) {
+      setErrInInput(true);
+      return;
+    } else {
+      setErrInInput(false);
+      setIsLoading(true);
+      axios.get(APIManager.getAllTnxByAddress(address))
       .then(res => {
         let newRows = res.data.result.map(item => ({
           ...item,
@@ -102,17 +107,30 @@ export default () => {
       })
       .catch(() => {
         window.alert("Network error");
-      })
+        setIsLoading(true);
+        });
+    }
+
   }, []);
 
   return (
     <div className={classes.root}>
       {isLoading && (<Spinner />)}
-      <Paper>
-        <Input></Input>
-        <Button color="primary" variant="contained">
+      <div className="load-txns-section">
+        <TextField
+          inputRef={addressInput}
+          error={errInInput}
+          placeholder="address">
+        </TextField>
+        <Button
+          onClick={loadTxnsByAddress}
+          color="primary" 
+          variant="contained"
+          className="load-btn">
           Load tnxs by address
         </Button>
+      </div>
+      <Paper>
         <Grid
           rows={rows}
           columns={columns}

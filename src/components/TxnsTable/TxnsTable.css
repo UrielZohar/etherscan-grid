@@ -1,0 +1,16 @@
+
+.load-txns-section {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    position: fixed;
+    top: 9px;
+    left: 0;
+    z-index: 999;
+}
+
+.load-txns-section .load-btn {
+    margin-left: 10px;
+}

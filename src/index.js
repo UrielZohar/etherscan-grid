@@ -1,5 +1,5 @@
 import React from "react";
 import { render } from "react-dom";
-import Demo from "./components/demo";
+import TxnsTable from "./components/TxnsTable/TxnsTable";
 
-render(<Demo />, document.getElementById("root"));
+render(<TxnsTable />, document.getElementById("root"));
