@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
   SortingState, SelectionState, FilteringState, GroupingState, SearchState,
@@ -22,7 +22,9 @@ import {
   globalSalesValues,
 } from './demo-data/generator'; 
 
-import { Spinner } from './spinner/Spinner'
+import { Spinner } from './spinner/Spinner';
+import axios from 'axios';
+import APIManager from '../utils/APIManager';
 
 const Cell = (props) => {
   const { column } = props;
@@ -61,6 +63,11 @@ export default () => {
   const [currencyColumns] = useState(['amount']);
   const [percentColumns] = useState(['discount']);
   const [booleanColumns] = useState(['shipped']);
+  useEffect(() => {
+    console.log(APIManager.getAllTnxByAddress('0x9f7dd5ea934d188a599567ee104e97fa46cb4496'));
+    axios.get(APIManager.getAllTnxByAddress('0x9f7dd5ea934d188a599567ee104e97fa46cb4496'))
+    .then(res => console.log(res), err => console.log('fail'));
+  }, []);
 
   return (
     <React.Fragment>
