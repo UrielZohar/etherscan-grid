@@ -134,6 +134,7 @@ export default () => {
         <Grid
           rows={rows}
           columns={columns}
+          columnAutoWidth={true}
           getRowId={getRowId}
         >
           <FilteringState
@@ -149,8 +150,6 @@ export default () => {
           <VirtualTable
             cellComponent={Cell}
           />
-
-          <TableColumnResizing defaultColumnWidths={defaultColumnWidths} /> 
           <TableHeaderRow showSortingControls />
           <TableColumnReordering defaultOrder={columns.map(column => column.name)} />
           <TableFilterRow showFilterSelector />
