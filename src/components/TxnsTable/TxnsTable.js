@@ -107,7 +107,7 @@ export default () => {
       }, () => {window.alert("Invalid address"); setIsLoading(true);})
       .catch(() => {
         window.alert("Network error");
-        setIsLoading(true);
+        setIsLoading(false);
         });
     }
 
@@ -120,7 +120,7 @@ export default () => {
         <TextField
           inputRef={addressInput}
           error={errInInput}
-          placeholder="address">
+          placeholder="0x9f7dd5ea934d188a599567ee104e97fa46cb4496">
         </TextField>
         <Button
           onClick={loadTxnsByAddress}
