@@ -1,6 +1,6 @@
 
 class APIManager {
-    static MAIN_URL = 'http://api.etherscan.io/api?';
+    static MAIN_URL = 'https://api.etherscan.io/api?';
     static API_KEY = '4W91N2SY72HVH317NJPTW8E65EAAA2TRUC';
 
     static getAllTnxByAddress (address) {
