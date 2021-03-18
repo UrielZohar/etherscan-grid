@@ -104,7 +104,7 @@ export default () => {
         }))
         setRows(newRows);
         setIsLoading(false);
-      })
+      }, () => {window.alert("Invalid address"); setIsLoading(true);})
       .catch(() => {
         window.alert("Network error");
         setIsLoading(true);
