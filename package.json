@@ -29,6 +29,5 @@
     "electron-start": "node src/wait-for-react"
   },
   "main": "src/electron.js",
-  "electron": "electron .",
-  "homepage": "./"
+  "electron": "electron ."
 }
